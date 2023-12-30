@@ -1,0 +1,46 @@
+<mat-toolbar class="max-w-7xl border-x justify-between" id="navbar">
+  <a routerLink="home">Pokémon Store</a>
+
+  <!-- [matMenuTriggerFor]="menu" on the button:
+This is an Angular Material directive (matMenuTriggerFor) applied to the button.
+It tells Angular that when this button is clicked, it should trigger the menu
+that is associated with the template variable named menu. -->
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+
+    <mat-icon [matBadge]=3 matBadgeColor="warn">shopping_cart</mat-icon>
+  </button>
+
+  <!-- This part defines a local template variable named menu for the mat-menu component.
+    The ="matMenu" part is Angular's way of specifying the type of the variable, which in this case is the menu type. -->
+  <mat-menu #menu="matMenu" class="text-white">
+
+    <div class="p-3 divide-y divide-solid">
+      <div class="pb-3 flex justify-between">
+        <span class="mr-16">3 Items</span>
+        <a routerLink="cart">View Cart</a>
+      </div>
+      <div class="py-3">
+        <div class="flex justify-between font-light mb-2">
+          Keyboard 1
+          <span class="font-bold">{{'150' | currency:'EUR'}}</span>
+        </div>
+        <div class="flex justify-between font-light mb-2">
+          Mouse 1
+          <span class="font-bold">{{'40' | currency: 'EUR'}}</span>
+        </div>
+      </div>
+      <div class="flex justify-between font-light py-3">
+        Total:
+        <span class="font-bold">{{190 | currency:'EUR'}}</span>
+      </div>
+      <div class="pt-3 flex justify-between">
+        <button class="bg-yellow-600 rounded-full w-9 h-9">
+          <mat-icon>remove_shopping_cart</mat-icon>
+        </button>
+        <button class="bg-green-600 rounded-full w-9 h-9">
+          <mat-icon>shopping_cart_checkout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-menu>
+</mat-toolbar>

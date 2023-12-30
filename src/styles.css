@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  -family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.material-icons.md-18 {
+  font-size: 18px !important;
+  height: 18px !important;
+  width: 18px !important;
+}
+
+.material-icons.md-24 {
+  font-size: 24px !important;
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.material-icons.md-36 {
+  font-size: 36px !important;
+  height: 36px !important;
+  width: 36px !important;
+}
+
+.material-icons.md-48 {
+  font-size: 48px !important;
+  height: 48px !important;
+  width: 48px !important;
+}

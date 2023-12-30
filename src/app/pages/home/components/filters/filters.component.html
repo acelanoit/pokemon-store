@@ -1,0 +1,14 @@
+<mat-expansion-panel *ngIf="types">
+  <mat-expansion-panel-header>
+    <mat-panel-title>TYPES</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-selection-list [multiple]="false">
+
+    <!-- It's better to add the event listener to the mat-list-option instead of the button,
+otherwise the even will only be triggered by clicking on the text inside the button -->
+    <mat-list-option (click)="onShowType(type)" *ngFor="let type of types" [value]="type">
+
+      <button>{{type}}</button>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-expansion-panel>
