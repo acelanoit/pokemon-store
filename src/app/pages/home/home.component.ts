@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CartService } from '../../services/cart.service';
+import { Pokemon } from '../../models/pokemon.model';
 
 // Use a constant to store the row height for each number of columns.
 // Use the TypeScript Index Signature to specify the type for the property name inside an object
@@ -14,6 +16,8 @@ export class HomeComponent {
   rowHeight = ROWS_HEIGHT[this.cols];
   type = '';
 
+  constructor(private cartService: CartService) { }
+
   onColumnsCountChange(colsNum: number): void {
     this.cols = colsNum;
 
@@ -23,5 +27,15 @@ export class HomeComponent {
 
   onShowType(newType: string): void {
     this.type = newType;
+  }
+
+  onAddToCart(pokemon: Pokemon): void {
+    this.cartService.addToCart({
+      image: pokemon.image,
+      name: pokemon.name,
+      price: pokemon.price,
+      quantity: 1,
+      id: pokemon.id
+    });
   }
 }
