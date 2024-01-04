@@ -64,6 +64,19 @@ export class CartService {
     localStorage.setItem(this.cartKey, JSON.stringify({ items }));
   }
 
+  removeQuantity(item: CartItem): void {
+    const items = [...this.cart.value.items];
+    const filteredItems = items.map((_item) => {
+      if (_item.id === item.id) {
+        _item.quantity--;
+      }
+      return _item;
+    });
+    this.cart.next({ items: filteredItems });
+    this._snackBar.open('1 item removed from cart!', 'Ok', { duration: 3000 });
+    localStorage.setItem(this.cartKey, JSON.stringify({ items: filteredItems }));
+  }
+
   getTotal(items: CartItem[]): number {
     return items.map(item => item.price * item.quantity)
       .reduce((prev, current) => prev + current, 0);
@@ -77,7 +90,7 @@ export class CartService {
     localStorage.removeItem(this.cartKey);
   }
 
-  removeFromCart(item: CartItem) {
+  removeFromCart(item: CartItem): void {
     const items = [...this.cart.value.items];
     const filteredItems = items.filter(_item => _item.id !== item.id);
     this.cart.next({ items: filteredItems });

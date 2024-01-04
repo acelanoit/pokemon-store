@@ -9,24 +9,7 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  cart: Cart = {
-    items: [
-      {
-        image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png',
-        name: 'Blastoise',
-        price: 200,
-        quantity: 1,
-        id: 9
-      },
-      {
-        image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png',
-        name: 'Blastoise',
-        price: 200,
-        quantity: 3,
-        id: 6
-      }
-    ]
-  };
+  cart: Cart = { items: [] };
   dataSource: CartItem[] = [];
   displayedColumns: string[] = [
     'image',
@@ -56,6 +39,15 @@ export class CartComponent implements OnInit {
 
   onRemoveFromCart(item: CartItem): void {
     this._cartService.removeFromCart(item);
+  }
+
+  onAddQuantity(item: CartItem): void {
+    this._cartService.addToCart(item);
+  }
+
+  onRemoveQuantity(item: CartItem): void {
+    if (item.quantity === 1) this._cartService.removeFromCart(item);
+    else this._cartService.removeQuantity(item);
   }
 
 }
