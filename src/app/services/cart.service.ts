@@ -58,7 +58,7 @@ export class CartService {
     this.cart.next({ items }); // Equivalent to this.cart.next({ items: items });
 
     // Display a notification indicating that an item has been added to the cart
-    this._snackBar.open('1 item added to cart', 'Ok', { duration: 3000 });
+    this._snackBar.open('1 item added to cart!', 'Ok', { duration: 3000 });
 
     // Update localStorage with the new cart data
     localStorage.setItem(this.cartKey, JSON.stringify({ items }));
@@ -75,5 +75,13 @@ export class CartService {
 
     // Clear localStorage when the cart is cleared
     localStorage.removeItem(this.cartKey);
+  }
+
+  removeFromCart(item: CartItem) {
+    const items = [...this.cart.value.items];
+    const filteredItems = items.filter(_item => _item.id !== item.id);
+    this.cart.next({ items: filteredItems });
+    this._snackBar.open('1 item removed from cart!', 'Ok', { duration: 3000 });
+    localStorage.setItem(this.cartKey, JSON.stringify({ items: filteredItems }));
   }
 }
