@@ -3,6 +3,8 @@ import { CartService } from '../../services/cart.service';
 import { StoreService } from '../../services/store.service';
 import { Pokemon } from '../../models/pokemon.model';
 import { Subscription } from 'rxjs';
+import { OnInit } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 
 // Use a constant to store the row height for each number of columns.
 // Use the TypeScript Index Signature to specify the type for the property name inside an object
@@ -13,7 +15,7 @@ const ROWS_HEIGHT: { [id: number]: number } = { 1: 400, 3: 335, 4: 350 };
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   cols = 3;
   rowHeight = ROWS_HEIGHT[this.cols];
   type = '';
@@ -32,7 +34,7 @@ export class HomeComponent {
 
     // We subscribe to the observable returned by getPokemons.
     // When the HTTP requests for all Pokemon complete, the callback function ((_pokemons: Pokemon[]) => { this.pokemons = _pokemons; }) is executed.
-    this._storeService.getPokemons().subscribe((_pokemons: Pokemon[]) => {
+    this.pokemonsSubscription = this._storeService.getPokemons().subscribe((_pokemons: Pokemon[]) => {
 
       // _pokemons now holds an array of Pokemon, and it's assigned to this.pokemons, which is a property in this component.
       // This allows us to use the fetched Pokemon data in this Angular component.
@@ -60,5 +62,23 @@ export class HomeComponent {
       quantity: 1,
       id: pokemon.id
     });
+  }
+
+  // In Angular, the ngOnDestroy lifecycle hook is used to perform cleanup operations when a component is about to be destroyed.
+  // This hook is called just before Angular destroys the component, and it provides an opportunity to release resources,
+  // unsubscribe from observables, or perform any necessary cleanup.
+
+  // The pokemonsSubscription variable holds a reference to a subscription created
+  // when we subscribe to the observable returned by getPokemons from the StoreService.
+  // When the component is destroyed (for example, when navigating away from the component or when the component is no longer needed),
+  // it's important to unsubscribe from any active subscriptions to prevent memory leaks and unnecessary resource consumption.
+
+  // Each time we subscribe to an observable, a new subscription is created, and if we don't explicitly unsubscribe
+  // from these subscriptions when the component is no longer needed, they can accumulate over time.
+  // This can lead to memory leaks and unexpected behavior in our application.
+  ngOnDestroy(): void {
+    if (this.pokemonsSubscription) {
+      this.pokemonsSubscription.unsubscribe();
+    }
   }
 }
