@@ -7,11 +7,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class CartService {
+  private cartKey = 'shopping_cart';
+
   // Define a BehaviorSubject to hold the current state of the shopping cart
   cart = new BehaviorSubject<Cart>({ items: [] });
 
   // Constructor that takes MatSnackBar as a parameter for displaying notifications:
-  constructor(private _snackBar: MatSnackBar) { }
   // private is an access modifier, indicating that _snackBar is a private property of the class.
   // It means that this property is not directly accessible from outside the class.
   // _snackBar: This is the name of the property. The underscore at the beginning of the name
@@ -26,6 +27,14 @@ export class CartService {
   // Typically, the MatSnackBar service is used for displaying snack bar notifications in the user interface.
   // For example, within methods of this class, you can use _snackBar.open(...) to display a snack bar notification.
   // This injection mechanism helps in achieving better modularity, testability, and maintainability in your Angular application.
+  constructor(private _snackBar: MatSnackBar) {
+
+    // Retrieve cart data from localStorage on service initialization
+    const storedCart = localStorage.getItem(this.cartKey);
+    if (storedCart) {
+      this.cart.next(JSON.parse(storedCart));
+    }
+  }
 
   // Method to add an item to the shopping cart
   addToCart(item: CartItem): void {
@@ -50,6 +59,9 @@ export class CartService {
 
     // Display a notification indicating that an item has been added to the cart
     this._snackBar.open('1 item added to cart', 'Ok', { duration: 3000 });
+
+    // Update localStorage with the new cart data
+    localStorage.setItem(this.cartKey, JSON.stringify({ items }));
   }
 
   getTotal(items: CartItem[]): number {
@@ -60,5 +72,8 @@ export class CartService {
   clearCart(): void {
     this.cart.next({ items: [] });
     this._snackBar.open('Cart cleared!', 'Ok', { duration: 3000 });
+
+    // Clear localStorage when the cart is cleared
+    localStorage.removeItem(this.cartKey);
   }
 }
