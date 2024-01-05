@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { StoreService } from '../../services/store.service';
-import { Pokemon } from '../../models/pokemon.model';
+import { Pokemon, APIPokemon } from '../../models/pokemon.model';
 import { Subscription } from 'rxjs';
 import { OnInit } from '@angular/core';
 import { OnDestroy } from '@angular/core';
@@ -34,13 +34,28 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // We subscribe to the observable returned by getPokemons.
     // When the HTTP requests for all Pokemon complete, the callback function ((_pokemons: Pokemon[]) => { this.pokemons = _pokemons; }) is executed.
-    this.pokemonsSubscription = this._storeService.getPokemons().subscribe((_pokemons: Pokemon[]) => {
+    this.pokemonsSubscription = this._storeService.getPokemons().subscribe((_pokemons: APIPokemon[]) => {
 
       // _pokemons now holds an array of Pokemon, and it's assigned to this.pokemons, which is a property in this component.
       // This allows us to use the fetched Pokemon data in this Angular component.
-      this.pokemons = _pokemons;
+
+
+      this.pokemons = _pokemons.map((pokemon: APIPokemon) => {
+        return this.transformPokemon(pokemon);
+      });
       console.log(this.pokemons);
     });
+  }
+
+  transformPokemon(pokemon: APIPokemon): Pokemon {
+    return {
+      id: pokemon.id,
+      name: pokemon.name,
+      price: pokemon.id + 60,
+      types: `${pokemon.types[0].type.name}${pokemon.types[1] ? `, ${pokemon.types[1].type.name}` : ''}`,
+      image: pokemon.sprites.front_default,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultricies, elit quis tempor fermentum, nisl nunc ultrices felis, quis ali'
+    };
   }
 
   onColumnsCountChange(colsNum: number): void {
