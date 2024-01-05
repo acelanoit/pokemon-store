@@ -53,8 +53,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         return this.transformPokemon(pokemonDetails, description);
       });
-      console.log(this.pokemons);
-      console.log(this.pokemons[34].description)
     });
   }
 
