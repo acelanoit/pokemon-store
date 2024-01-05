@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { StoreService } from '../../services/store.service';
-import { Pokemon, APIPokemon } from '../../models/pokemon.model';
+import { Pokemon, APIPokemon, APISpecies } from '../../models/pokemon.model';
 import { Subscription } from 'rxjs';
 import { OnInit } from '@angular/core';
 import { OnDestroy } from '@angular/core';
@@ -33,28 +33,39 @@ export class HomeComponent implements OnInit, OnDestroy {
   getPokemons(): void {
 
     // We subscribe to the observable returned by getPokemons.
-    // When the HTTP requests for all Pokemon complete, the callback function ((_pokemons: Pokemon[]) => { this.pokemons = _pokemons; }) is executed.
-    this.pokemonsSubscription = this._storeService.getPokemons().subscribe((_pokemons: APIPokemon[]) => {
+    // When the HTTP requests for all Pokemon complete, the callback function is executed.
+    this.pokemonsSubscription = this._storeService.getPokemons().subscribe((pokemonData: [APIPokemon, APISpecies][]) => {
 
-      // _pokemons now holds an array of Pokemon, and it's assigned to this.pokemons, which is a property in this component.
-      // This allows us to use the fetched Pokemon data in this Angular component.
+      // pokemonData is an array where each element is a tuple (pair) containing two pieces of information: pokemonDetails and pokemonSpeciesInfo.
+      // We use destructuring to break down the tuple into two separate pieces: pokemonDetails and pokemonSpeciesInfo.
+      this.pokemons = pokemonData.map(([pokemonDetails, pokemonSpeciesInfo]) => {
+        // Without destructuring, our code would look like this:
+        // this.pokemons = pokemonData.map((pokemonTuple) => {
+        // const pokemonDetails = pokemonTuple[0];
+        // const pokemonDescription = pokemonTuple[1];
 
+        // The Pokémon API includes the form feed character in the flavor text, so we need to replace it with a space to handle formatting issues.
+        // The replace method, when used with a regular expression, will accept both the escape sequence \f
+        // and the Unicode escape sequence \u000C interchangeably because they represent the same character.
+        const description = pokemonSpeciesInfo?.flavor_text_entries[0]?.flavor_text.replace(/\f/g, ' ') || 'No description available';
+        // Alternatively:
+        // const description = pokemonSpeciesInfo?.flavor_text_entries[0]?.flavor_text.replace(/\u000C/g, ' ') || 'No description available';
 
-      this.pokemons = _pokemons.map((pokemon: APIPokemon) => {
-        return this.transformPokemon(pokemon);
+        return this.transformPokemon(pokemonDetails, description);
       });
       console.log(this.pokemons);
+      console.log(this.pokemons[34].description)
     });
   }
 
-  transformPokemon(pokemon: APIPokemon): Pokemon {
+  transformPokemon(pokemon: APIPokemon, description: string): Pokemon {
     return {
       id: pokemon.id,
       name: pokemon.name,
       price: pokemon.id + 60,
-      types: `${pokemon.types[0].type.name}${pokemon.types[1] ? `, ${pokemon.types[1].type.name}` : ''}`,
+      'type(s)': `${pokemon.types[0].type.name}${pokemon.types[1] ? `, ${pokemon.types[1].type.name}` : ''}`,
       image: pokemon.sprites.front_default,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultricies, elit quis tempor fermentum, nisl nunc ultrices felis, quis ali'
+      description: description
     };
   }
 

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { APIPokemon } from '../models/pokemon.model';
+import { APIPokemon, APISpecies } from '../models/pokemon.model';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+
 const pokemonAmount: number = 150;
 
 const STORE_BASE_URL = 'https://pokeapi.co/api/v2';
@@ -14,6 +15,7 @@ export class StoreService {
 
   constructor(private _httpClient: HttpClient) { }
 
+  // Fetch details of a single Pokemon by ID:
   // This method takes an id as an input and returns an observable (Observable<APIPokemon>)
   // that represents the HTTP request to fetch a single Pokemon from the PokeAPI.
   getPokemon(id: number): Observable<APIPokemon> {
@@ -24,19 +26,42 @@ export class StoreService {
     return this._httpClient.get<APIPokemon>(`${STORE_BASE_URL}/pokemon/${id}`);
   }
 
-  // This method is responsible for fetching multiple Pokemon.
-  getPokemons(): Observable<APIPokemon[]> {
+  // Fetch species information, including description, for a single Pokemon by ID
+  getPokemonSpecies(id: number): Observable<APISpecies> {
+    return this._httpClient.get<APISpecies>(`${STORE_BASE_URL}/pokemon-species/${id}`);
+  }
+
+  // // This method is responsible for fetching details and species information for multiple Pokemon
+  getPokemons(): Observable<any[]> {
 
     // It initializes an empty array to hold observables for each individual Pokemon.
-    const observables: Observable<APIPokemon>[] = [];
+    const observables: Observable<any>[] = [];
 
-    // In a loop, it calls the getPokemon method for each Pokemon id (from 1 to pokemonAmount) and adds the resulting observables to the observables array.
+    // Loop through Pokemon IDs and create observables for details and species information
     for (let i = 1; i <= pokemonAmount; i++) {
-      observables.push(this.getPokemon(i));
+      const pokemonDetailsObservable = this.getPokemon(i);
+      const pokemonSpeciesObservable = this.getPokemonSpecies(i);
+
+      // Combine details and species information observables for each Pokemon
+      observables.push(forkJoin([pokemonDetailsObservable, pokemonSpeciesObservable]));
     }
 
-    // The forkJoin operator takes an array of observables and combines them into a single observable that emits an array of results.
-    // In this case, it combines the observables for each Pokemon into a single observable that emits an array of Pokemon.
+    // Combine all observables into a single observable
     return forkJoin(observables);
+    // The result of forkJoin in this context is an array of tuples.
+    // Each tuple contains the combined results of the observables provided to forkJoin.
+    // Each tuple represents the details and species information (including description) for a specific Pokémon.
+    // The structure of the emitted value is something like this:
+    // [
+    //   [pokemon1Details, pokemon1SpeciesInfo],
+    //   [pokemon2Details, pokemon2SpeciesInfo],
+    //   ... more tuples for each Pokémon
+    // ]
+
+    // pokemon1Details: Details of the first Pokémon.
+    // pokemon1SpeciesInfo: Species information (including description) of the first Pokémon.
+    // Similarly, the same structure for the details and species information of other Pokémon.
+    // This array of tuples is what you receive when you subscribe to the observable returned by forkJoin(observables) in the getPokemons method.
+    // Each tuple can be destructured to access the details and species information for a specific Pokémon in your consuming code.
   }
 }

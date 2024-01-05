@@ -2,7 +2,7 @@ export interface Pokemon {
   id: number;
   name: string;
   price: number;
-  types: string;
+  'type(s)': string;
   description: string;
   image: string;
 }
@@ -13,4 +13,7 @@ export interface APIPokemon {
   types: Array<{ type: { name: string } }>;
   sprites: { front_default: string };
   species: { url: string };
+}
+export interface APISpecies {
+  flavor_text_entries: Array<{ flavor_text: string; language: { name: string } }>;
 }
