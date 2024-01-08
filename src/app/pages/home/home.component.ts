@@ -101,6 +101,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   onItemsCountChange(newCount: number): void {
     this.count = newCount;
     this.setDisplayedPokemons(newCount);
+    if (this.type) this.onShowType(this.type);
   }
 
   onSortChange(newSort: string): void {
