@@ -1,16 +1,14 @@
-<mat-card [ngClass]="{'text-center': !fullWidthMode}">
+<mat-card *ngIf="pokemon" [ngClass]="{'text-center': !fullWidthMode}">
   <div [ngClass]="{'flex': fullWidthMode}">
-    <img class="mb-1 mx-auto object-contain" [ngClass]="{'h-[200px]': fullWidthMode}"
-      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png">
+    <img class="mb-1 mx-auto object-contain" [ngClass]="{'h-[200px]': fullWidthMode}" [src]="pokemon.image">
     <div class="w-full">
       <div [ngClass]="{'px-8 py-2 flex flex-col justify-between': fullWidthMode}">
-        <h5>Fire</h5>
-        <p>Charizard</p>
-        <p *ngIf="fullWidthMode">Spits fire that is hot enough to melt boulders. Known to cause
-          forest fires unintentionally.</p>
+        <h5>{{type1 ?? ''}} {{type2 ?? ''}}</h5>
+        <p>{{pokemon.name[0].toUpperCase() + pokemon.name.slice(1)}}</p>
+        <p *ngIf="fullWidthMode">{{pokemon.description}}</p>
       </div>
       <div class="flex p-3 mt-5" [ngClass]="{'justify-between': !fullWidthMode, 'justify-evenly': fullWidthMode}">
-        <span class="text-red-400">{{'150' | currency}}</span>
+        <span class="text-red-400">{{pokemon.price| currency}}</span>
         <button (click)="onAddToCart()">
           <mat-icon class="text-yellow-600">catching_pokemon</mat-icon>
         </button>
