@@ -17,3 +17,8 @@ export interface APIPokemon {
 export interface APISpecies {
   flavor_text_entries: Array<{ flavor_text: string; language: { name: string } }>;
 }
+
+export interface PokemonType {
+  name: string;
+  selected: boolean;
+}

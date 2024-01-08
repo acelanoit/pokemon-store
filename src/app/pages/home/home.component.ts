@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { StoreService } from '../../services/store.service';
-import { Pokemon, APIPokemon, APISpecies } from '../../models/pokemon.model';
+import { Pokemon, APIPokemon, APISpecies, PokemonType } from '../../models/pokemon.model';
 import { Subscription } from 'rxjs';
 import { OnInit } from '@angular/core';
 import { OnDestroy } from '@angular/core';
@@ -18,7 +18,7 @@ const ROWS_HEIGHT: { [id: number]: number } = { 1: 400, 3: 335, 4: 350 };
 export class HomeComponent implements OnInit, OnDestroy {
   cols = 3;
   rowHeight = ROWS_HEIGHT[this.cols];
-  type = '';
+  type: PokemonType = { name: '', selected: false };
   pokemons: Array<Pokemon> | undefined;
   displayedPokemons: Array<Pokemon> | undefined;
   sort = 'asc';
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         return this.transformPokemon(pokemonDetails, description);
       });
-      this.setDisplayedPokemons(this.count);
+      this.setDisplayedPokemons(this.count, this.type);
     });
   }
 
@@ -79,9 +79,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.rowHeight = ROWS_HEIGHT[this.cols];
   }
 
-  onShowType(newType: string): void {
+  onShowType(newType: PokemonType): void {
     this.type = newType;
-    this.displayedPokemons = this.pokemons?.filter((pokemon) => pokemon['type(s)'].includes(this.type));
+    this.setDisplayedPokemons(this.count, this.type);
   }
 
   onAddToCart(pokemon: Pokemon): void {
@@ -94,14 +94,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  setDisplayedPokemons(amount: number): void {
-    this.displayedPokemons = this.pokemons?.slice(0, amount);
+  setDisplayedPokemons(amount: number, type: PokemonType): void {
+    if (type.selected) this.displayedPokemons = this.pokemons?.filter((pokemon) => pokemon['type(s)'].includes(type.name)).slice(0, amount);
+    else this.displayedPokemons = this.pokemons?.slice(0, amount);
   }
 
   onItemsCountChange(newCount: number): void {
     this.count = newCount;
-    this.setDisplayedPokemons(newCount);
-    if (this.type) this.onShowType(this.type);
+    this.setDisplayedPokemons(this.count, this.type);
   }
 
   onSortChange(newSort: string): void {

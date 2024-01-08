@@ -1,35 +1,39 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-
+import { PokemonType } from '../../../../models/pokemon.model';
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
-  styleUrl: './filters.component.css'
+  styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent {
-  @Output() showType = new EventEmitter<string>();
+  @Output() showType = new EventEmitter<PokemonType>();
 
-  types: string[] = [
-    "Normal",
-    "Fire",
-    "Water",
-    "Electric",
-    "Grass",
-    "Ice",
-    "Fighting",
-    "Poison",
-    "Ground",
-    "Flying",
-    "Psychic",
-    "Bug",
-    "Rock",
-    "Ghost",
-    "Dragon",
-    "Dark",
-    "Steel"
+  types: PokemonType[] = [
+    { name: "Normal", selected: false },
+    { name: "Fire", selected: false },
+    { name: "Water", selected: false },
+    { name: "Electric", selected: false },
+    { name: "Grass", selected: false },
+    { name: "Ice", selected: false },
+    { name: "Fighting", selected: false },
+    { name: "Poison", selected: false },
+    { name: "Ground", selected: false },
+    { name: "Flying", selected: false },
+    { name: "Psychic", selected: false },
+    { name: "Bug", selected: false },
+    { name: "Rock", selected: false },
+    { name: "Ghost", selected: false },
+    { name: "Dragon", selected: false },
+    { name: "Dark", selected: false },
+    { name: "Steel", selected: false }
   ];
 
-  onShowType(type: string): void {
+  onShowType(type: PokemonType): void {
+
+    // When a type is selected, the selected property is set to true,
+    // but the value of type.selected is not updated before the type object is passed to this method,
+    // so the value of type.selected is still false and we need to manually toggle it.
+    type.selected = !type.selected;
     this.showType.emit(type);
   }
-
 }
