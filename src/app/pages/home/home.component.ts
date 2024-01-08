@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // The Pokémon API includes the form feed character in the flavor text, so we need to replace it with a space to handle formatting issues.
         // The replace method, when used with a regular expression, will accept both the escape sequence \f
         // and the Unicode escape sequence \u000C interchangeably because they represent the same character.
-        const description = pokemonSpeciesInfo?.flavor_text_entries[1]?.flavor_text.replace(/\f/g, ' ') || 'No description available';
+        const description = pokemonSpeciesInfo?.flavor_text_entries?.find((entry) => entry.language.name === 'en')?.flavor_text.replace(/\f/g, ' ') || 'No description available';
         // Alternatively:
         // const description = pokemonSpeciesInfo?.flavor_text_entries[0]?.flavor_text.replace(/\u000C/g, ' ') || 'No description available';
 
