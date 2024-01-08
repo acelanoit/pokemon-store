@@ -57,11 +57,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   transformPokemon(pokemon: APIPokemon, description: string): Pokemon {
+    const pokemonTypes = pokemon.types.map((type) => type.type.name);
+    const type1 = pokemonTypes[0][0].toUpperCase() + pokemonTypes[0].slice(1);
+    const type2 = pokemonTypes[1] ? pokemonTypes[1][0].toUpperCase() + pokemonTypes[1].slice(1) : '';
     return {
       id: pokemon.id,
-      name: pokemon.name,
+      name: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
       price: pokemon.id + 60,
-      'type(s)': `${pokemon.types[0].type.name}${pokemon.types[1] ? `, ${pokemon.types[1].type.name}` : ''}`,
+      'type(s)': type1 + (type2 ? '/' + type2 : ''),
       image: pokemon.sprites.front_default,
       description: description
     };

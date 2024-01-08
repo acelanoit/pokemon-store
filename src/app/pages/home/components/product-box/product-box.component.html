@@ -3,8 +3,8 @@
     <img class="mb-1 mx-auto object-contain" [ngClass]="{'h-[200px]': fullWidthMode}" [src]="pokemon.image">
     <div class="w-full">
       <div [ngClass]="{'px-8 py-2 flex flex-col justify-between': fullWidthMode}">
-        <h5>{{type1 ?? ''}} {{type2 ?? ''}}</h5>
-        <p>{{pokemon.name[0].toUpperCase() + pokemon.name.slice(1)}}</p>
+        <h5>{{pokemon['type(s)']}}</h5>
+        <p>{{pokemon.name}}</p>
         <p *ngIf="fullWidthMode">{{pokemon.description}}</p>
       </div>
       <div class="flex p-3 mt-5" [ngClass]="{'justify-between': !fullWidthMode, 'justify-evenly': fullWidthMode}">
