@@ -81,6 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onShowType(newType: string): void {
     this.type = newType;
+    this.displayedPokemons = this.pokemons?.filter((pokemon) => pokemon['type(s)'].includes(this.type));
   }
 
   onAddToCart(pokemon: Pokemon): void {
