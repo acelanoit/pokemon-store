@@ -103,10 +103,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onSortChange(newSort: string): void {
-    if (this.sort !== newSort) {
-      this.sort = newSort;
-      this.displayedPokemons?.reverse();
-    }
+    if (newSort === 'asc')
+      this.displayedPokemons?.sort((a, b) => a.id - b.id);
+    else
+      this.displayedPokemons?.sort((a, b) => b.id - a.id);
   }
 
   // In Angular, the ngOnDestroy lifecycle hook is used to perform cleanup operations when a component is about to be destroyed.

@@ -36,6 +36,7 @@ export class ProductsHeaderComponent {
   onItemsUpdated(newCount: number): void {
     this.itemsShowCount = newCount;
     this.itemsCountChange.emit(newCount);
+    this.setSort('asc');
   }
 
   onColumnsUpdated(colsNum: number): void {
