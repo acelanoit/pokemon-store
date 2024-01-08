@@ -20,14 +20,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   rowHeight = ROWS_HEIGHT[this.cols];
   type = '';
   pokemons: Array<Pokemon> | undefined;
-  sort = 'desc';
-  count = 12;
+  displayedPokemons: Array<Pokemon> | undefined;
+  sort = 'asc';
+  count = 30;
   pokemonsSubscription: Subscription | undefined;
 
   constructor(private cartService: CartService, private _storeService: StoreService) { }
 
   ngOnInit(): void {
-    this.getPokemons();
+    if (!this.pokemons) this.getPokemons();
   }
 
   getPokemons(): void {
@@ -47,12 +48,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         // The Pokémon API includes the form feed character in the flavor text, so we need to replace it with a space to handle formatting issues.
         // The replace method, when used with a regular expression, will accept both the escape sequence \f
         // and the Unicode escape sequence \u000C interchangeably because they represent the same character.
-        const description = pokemonSpeciesInfo?.flavor_text_entries[0]?.flavor_text.replace(/\f/g, ' ') || 'No description available';
+        const description = pokemonSpeciesInfo?.flavor_text_entries[1]?.flavor_text.replace(/\f/g, ' ') || 'No description available';
         // Alternatively:
         // const description = pokemonSpeciesInfo?.flavor_text_entries[0]?.flavor_text.replace(/\u000C/g, ' ') || 'No description available';
 
         return this.transformPokemon(pokemonDetails, description);
       });
+      this.setDisplayedPokemons(this.count);
     });
   }
 
@@ -63,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return {
       id: pokemon.id,
       name: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
-      price: pokemon.id + 60,
+      price: pokemon.id * 5 + 70,
       'type(s)': type1 + (type2 ? '/' + type2 : ''),
       image: pokemon.sprites.front_default,
       description: description
@@ -89,6 +91,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       quantity: 1,
       id: pokemon.id
     });
+  }
+
+  setDisplayedPokemons(amount: number): void {
+    this.displayedPokemons = this.pokemons?.slice(0, amount);
+  }
+
+  onItemsCountChange(newCount: number): void {
+    this.count = newCount;
+    this.setDisplayedPokemons(newCount);
+  }
+
+  onSortChange(newSort: string): void {
+    if (this.sort !== newSort) {
+      this.sort = newSort;
+      this.displayedPokemons?.reverse();
+    }
   }
 
   // In Angular, the ngOnDestroy lifecycle hook is used to perform cleanup operations when a component is about to be destroyed.

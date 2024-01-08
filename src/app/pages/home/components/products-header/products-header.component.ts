@@ -8,8 +8,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class ProductsHeaderComponent {
   @Output() columnsCountChange = new EventEmitter<number>();
+  @Output() itemsCountChange = new EventEmitter<number>();
+  @Output() sortChange = new EventEmitter<string>();
+
   sort!: SafeHtml; // Use ! to assert that sort will be defined before it's used, or else TS will complain
-  itemsShowCount = 12;
+  itemsShowCount = 30;
 
   constructor(private domSanitizer: DomSanitizer) {
     // Set the default value for the sort variable
@@ -18,7 +21,7 @@ export class ProductsHeaderComponent {
 
   private setSort(order: 'asc' | 'desc'): void {
     const arrowIcon = order === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down';
-    const orderText = order === 'asc' ? 'A-Z' : 'Z-A';
+    const orderText = order === 'asc' ? '1-' + this.itemsShowCount : this.itemsShowCount + '-1';
 
     const htmlString = `<pre>Sort by:<i class="material-icons align-[-8px]">${arrowIcon}</i>${orderText}<i class="material-icons align-[-8px]">expand_more</i></pre>`;
 
@@ -27,10 +30,12 @@ export class ProductsHeaderComponent {
 
   onSortUpdated(newSort: 'asc' | 'desc'): void {
     this.setSort(newSort);
+    this.sortChange.emit(newSort);
   }
 
-  onItemsUpdated(count: number): void {
-    this.itemsShowCount = count;
+  onItemsUpdated(newCount: number): void {
+    this.itemsShowCount = newCount;
+    this.itemsCountChange.emit(newCount);
   }
 
   onColumnsUpdated(colsNum: number): void {
