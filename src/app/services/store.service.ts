@@ -4,7 +4,7 @@ import { APIPokemon, APISpecies } from '../models/pokemon.model';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 
-const pokemonAmount: number = 150;
+const pokemonAmount: number = 251;
 
 const STORE_BASE_URL = 'https://pokeapi.co/api/v2';
 
