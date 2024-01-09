@@ -30,6 +30,8 @@ export class FiltersComponent {
 
   onShowType(type: PokemonType): void {
 
+    console.log('diocane');
+
     // When a type is selected, the selected property is set to true,
     // but the value of type.selected is not updated before the type object is passed to this method,
     // so the value of type.selected is still false and we need to manually toggle it.

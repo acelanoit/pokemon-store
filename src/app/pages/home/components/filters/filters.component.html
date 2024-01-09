@@ -6,8 +6,8 @@
 
     <!-- It's better to add the event listener to the mat-list-option instead of the button,
       otherwise the even will only be triggered by clicking on the text inside the button -->
-    <mat-list-option (click)="onShowType(type)" *ngFor="let type of types" [selected]="type.selected">
-      <button>{{type.name}}</button>
+    <mat-list-option *ngFor="let type of types" [selected]="type.selected" (click)="onShowType(type)">
+      {{type.name}}
     </mat-list-option>
   </mat-selection-list>
 </mat-expansion-panel>
