@@ -11,7 +11,7 @@ const stripeKey = process.env.STRIPE_SECRET_KEY;
 // This line tells Express to serve static files from the 'public' directory.
 // Static files can include things like HTML, CSS, images, and client-side JavaScript files.
 // This middleware is essential for serving the frontend part of a web application.
-app.use(express.static('public'));
+app.use(express.static('client/browser'));
 
 // When extended is set to false, express uses the query-string library for parsing URL-encoded data.
 // The query-string library is simpler and more lightweight than the alternative (qs library with extended: true).
