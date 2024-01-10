@@ -9,7 +9,7 @@
         <p *ngIf="fullWidthMode">{{pokemon.description}}</p>
       </div>
       <div class="flex p-3 mt-5" [ngClass]="{'justify-between': !fullWidthMode, 'justify-evenly': fullWidthMode}">
-        <span class="text-red-400">{{pokemon.price| currency}}</span>
+        <span class="text-red-400">{{pokemon.price| currency:'EUR'}}</span>
         <button (click)="onAddToCart()">
           <mat-icon class="text-yellow-600">catching_pokemon</mat-icon>
         </button>
