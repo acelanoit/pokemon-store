@@ -49,4 +49,8 @@ export class CartComponent implements OnInit {
     if (item.quantity === 1) this._cartService.removeFromCart(item);
     else this._cartService.removeQuantity(item);
   }
+
+  onCheckout(): void {
+    this._cartService.checkout();
+  }
 }

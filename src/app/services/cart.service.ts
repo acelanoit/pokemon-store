@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Cart, CartItem } from '../models/cart.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
+import { loadStripe } from '@stripe/stripe-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private cartKey = 'shopping_cart';
+  stripeKey: string = 'pk_test_51OWjJ8JPdi2GTAjzw9weE3Vq8EqCvXMgpNyRoFDtKJgTIamGUhU0LN43FiHQ7YBMGFkf1xWrhr3bWPEyoJyJp8g500B9ufsJCq';
 
   // Define a BehaviorSubject to hold the current state of the shopping cart
   cart = new BehaviorSubject<Cart>({ items: [] });
@@ -27,7 +30,7 @@ export class CartService {
   // Typically, the MatSnackBar service is used for displaying snack bar notifications in the user interface.
   // For example, within methods of this class, you can use _snackBar.open(...) to display a snack bar notification.
   // This injection mechanism helps in achieving better modularity, testability, and maintainability in your Angular application.
-  constructor(private _snackBar: MatSnackBar) {
+  constructor(private _snackBar: MatSnackBar, private _httpClient: HttpClient) {
 
     // Retrieve cart data from localStorage on service initialization
     const storedCart = localStorage.getItem(this.cartKey);
@@ -96,5 +99,26 @@ export class CartService {
     this.cart.next({ items: filteredItems });
     this._snackBar.open('1 item removed from cart!', 'Ok', { duration: 3000 });
     localStorage.setItem(this.cartKey, JSON.stringify({ items: filteredItems }));
+  }
+
+  checkout(): void {
+
+    // Use Angular's HttpClient module to make a POST request to a local server at
+    // 'http://localhost:4242/checkout' with the content of the user's cart items
+    this._httpClient.post('http://localhost:4242/checkout', { items: this.cart.value.items })
+
+      // The subscribe method is part of the Angular HttpClient module
+      // and is used to subscribe to the observable returned by the HTTP request.
+      // The subscribe method takes a callback function as its argument. This function is executed
+      // when the HTTP request is successful and a response is received from the server.
+      .subscribe(async (response: any) => {
+
+        // Upon receiving a response from the server, it executes the following code asynchronously:
+        // It loads the Stripe library using the loadStripe function and awaits its completion
+        let stripe = await loadStripe(this.stripeKey);
+
+        // If the Stripe library is successfully loaded, it calls redirectToCheckout with the session ID from the server response
+        stripe?.redirectToCheckout({ sessionId: response.id });
+      });
   }
 }
