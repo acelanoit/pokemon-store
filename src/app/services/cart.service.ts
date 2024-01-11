@@ -105,7 +105,7 @@ export class CartService {
 
     // Use Angular's HttpClient module to make a POST request to a local server at
     // 'http://localhost:4242/checkout' with the content of the user's cart items
-    this._httpClient.post('http://localhost:4242/checkout', { items: this.cart.value.items })
+    this._httpClient.post('https://pokemon-store-antonio-api.vercel.app/checkout', { items: this.cart.value.items })
 
       // The subscribe method is part of the Angular HttpClient module
       // and is used to subscribe to the observable returned by the HTTP request.
