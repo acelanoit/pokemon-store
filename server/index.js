@@ -33,6 +33,18 @@ app.use(cors({ origin: true, credentials: true }));
 
 const stripe = new Stripe(stripeKey);
 
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/cancel.html");
+
+  // The sendFile method allows us to send a whole file instead of individual bits of HTML data.
+  // __dirname gives us the file path of the current file no matter where it's hosted.
+
+});
+
+app.get("success", function (req, res) {
+  res.sendFile(__dirname + "/success.html");
+});
+
 app.post("/checkout", async (req, res, next) => {
   try {
     const session = await stripe.checkout.sessions.create({
@@ -48,8 +60,8 @@ app.post("/checkout", async (req, res, next) => {
         quantity: 1,
       })),
       mode: "payment",
-      success_url: "https://pokemon-store-antonio-api.vercel.app/success.html",
-      cancel_url: "https://pokemon-store-antonio-api.vercel.app/cancel.html",
+      success_url: "https://pokemon-store-antonio-api.vercel.app/success",
+      cancel_url: "https://pokemon-store-antonio-api.vercel.app/cancel",
     });
 
     res.status(200).json({ id: session.id });
