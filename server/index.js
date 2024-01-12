@@ -33,16 +33,15 @@ app.use(cors({ origin: true, credentials: true }));
 
 const stripe = new Stripe(stripeKey);
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/cancel.html");
+app.get("/success", function (req, res) {
 
   // The sendFile method allows us to send a whole file instead of individual bits of HTML data.
   // __dirname gives us the file path of the current file no matter where it's hosted.
-
+  res.sendFile(__dirname + "/success.html");
 });
 
-app.get("success", function (req, res) {
-  res.sendFile(__dirname + "/success.html");
+app.get("/cancel", function (req, res) {
+  res.sendFile(__dirname + "/cancel.html");
 });
 
 app.post("/checkout", async (req, res, next) => {
