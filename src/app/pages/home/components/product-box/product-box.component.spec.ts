@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProductBoxComponent } from './product-box.component';
+import { commonDeclarations, commonImports, commonProviders } from '../../../../test-setup';
 
 describe('ProductBoxComponent', () => {
   let component: ProductBoxComponent;
@@ -8,10 +8,12 @@ describe('ProductBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductBoxComponent]
+      imports: [...commonImports],
+      declarations: [...commonDeclarations],
+      providers: [...commonProviders]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ProductBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

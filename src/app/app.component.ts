@@ -5,7 +5,7 @@ import { CartService } from './services/cart.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 
 // You can use the ngOnInit method in an Angular component without explicitly implementing the OnInit interface.
@@ -13,6 +13,7 @@ import { CartService } from './services/cart.service';
 // Implementing the OnInit interface is more of a best practice,
 // and it ensures that you correctly implement the ngOnInit method if you intend to use it
 export class AppComponent implements OnInit {
+  title = 'angular-store';
   cart: Cart = { items: [] };
 
   constructor(private _cartService: CartService) { }

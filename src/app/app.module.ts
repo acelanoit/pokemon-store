@@ -24,6 +24,8 @@ import { ProductBoxComponent } from './pages/home/components/product-box/product
 import { CartComponent } from './pages/cart/cart.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
+import { CartService } from './services/cart.service';
+import { StoreService } from './services/store.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,7 @@ import { DisclaimerComponent } from './components/disclaimer/disclaimer.componen
     MatSnackBarModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CartService, StoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

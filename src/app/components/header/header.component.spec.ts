@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HeaderComponent } from './header.component';
+import { commonDeclarations, commonImports, commonProviders } from '../../test-setup';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,10 +8,12 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderComponent]
+      imports: [...commonImports],
+      declarations: [...commonDeclarations],
+      providers: [...commonProviders]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

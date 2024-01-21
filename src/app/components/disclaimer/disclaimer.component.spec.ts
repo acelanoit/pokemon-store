@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DisclaimerComponent } from './disclaimer.component';
+import { commonDeclarations, commonImports, commonProviders } from '../../test-setup';
 
 describe('DisclaimerComponent', () => {
   let component: DisclaimerComponent;
@@ -8,10 +8,12 @@ describe('DisclaimerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DisclaimerComponent]
+      imports: [...commonImports],
+      declarations: [...commonDeclarations],
+      providers: [...commonProviders]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(DisclaimerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
