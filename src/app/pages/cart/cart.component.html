@@ -27,7 +27,8 @@
           <div class="flex items-center">
             <button (click)="onRemoveQuantity(element)" mat-icon-button><mat-icon>remove</mat-icon></button>
             <span>{{element.quantity}}</span>
-            <button (click)="onAddQuantity(element)" mat-icon-button><mat-icon>add</mat-icon></button>
+            <button (click)="onAddQuantity(element)" mat-icon-button
+              data-testid="increase"><mat-icon>add</mat-icon></button>
           </div>
         </td>
         <td mat-footer-cell *matFooterCellDef></td>

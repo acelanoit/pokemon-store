@@ -56,7 +56,7 @@ export class CartService {
       items.push(item);
     }
 
-    // Update the shopping cart state with the new items using the The next method of BehaviorSubject.
+    // Update the shopping cart state with the new items using the next method of BehaviorSubject.
     // This triggers the emission of the updated state to all subscribers.
     this.cart.next({ items }); // Equivalent to this.cart.next({ items: items });
 
