@@ -58,7 +58,7 @@ app.post("/checkout", async (req, res, next) => {
           },
           unit_amount: item.price * 100, // Stripe expects the price in cents
         },
-        quantity: 1,
+        quantity: item.quantity,
       })),
       mode: "payment",
 
