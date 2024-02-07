@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // Without destructuring, our code would look like this:
         // this.pokemons = pokemonData.map((pokemonTuple) => {
         // const pokemonDetails = pokemonTuple[0];
-        // const pokemonDescription = pokemonTuple[1];
+        // const pokemonSpeciesInfo = pokemonTuple[1];
 
         // The Pokémon API includes the form feed character in the flavor text, so we need to replace it with a space to handle formatting issues.
         // The replace method, when used with a regular expression, will accept both the escape sequence \f
