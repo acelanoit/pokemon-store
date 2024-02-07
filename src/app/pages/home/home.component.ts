@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         return this.transformPokemon(pokemonDetails, description);
       });
-      this.setDisplayedPokemons(this.count, this.type);
+      this.setDisplayedPokemons(this.count, this.type, this.sort);
     });
   }
 
@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onShowType(newType: PokemonType): void {
     this.type = newType;
-    this.setDisplayedPokemons(this.count, this.type);
+    this.setDisplayedPokemons(this.count, this.type, this.sort);
   }
 
   onAddToCart(pokemon: Pokemon): void {
@@ -94,14 +94,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  setDisplayedPokemons(amount: number, type: PokemonType): void {
+  setDisplayedPokemons(amount: number, type: PokemonType, sort: string): void {
     if (type.selected) this.displayedPokemons = this.pokemons?.filter((pokemon) => pokemon['type(s)'].includes(type.name)).slice(0, amount);
     else this.displayedPokemons = this.pokemons?.slice(0, amount);
+    this.onSortChange(sort);
   }
 
   onItemsCountChange(newCount: number): void {
     this.count = newCount;
-    this.setDisplayedPokemons(this.count, this.type);
+    this.setDisplayedPokemons(this.count, this.type, this.sort);
   }
 
   onSortChange(newSort: string): void {
@@ -109,6 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.displayedPokemons?.sort((a, b) => a.id - b.id);
     else
       this.displayedPokemons?.sort((a, b) => b.id - a.id);
+    this.sort = newSort;
   }
 
   // In Angular, the ngOnDestroy lifecycle hook is used to perform cleanup operations when a component is about to be destroyed.

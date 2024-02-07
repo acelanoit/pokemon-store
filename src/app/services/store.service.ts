@@ -42,11 +42,17 @@ export class StoreService {
       const pokemonDetailsObservable = this.getPokemon(i);
       const pokemonSpeciesObservable = this.getPokemonSpecies(i);
 
-      // Combine details and species information observables for each Pokemon
+      // Combine details and species information observables for each Pokemon:
+      // Inside the loop, forkJoin is used to combine the observables for fetching both details
+      // and species information for each individual Pokémon. This ensures that we don't proceed
+      // with processing a Pokémon's data until both its details and species information are received.
       observables.push(forkJoin([pokemonDetailsObservable, pokemonSpeciesObservable]));
     }
 
-    // Combine all observables into a single observable
+    // Combine all observables into a single observable:
+    // At the end of the loop, after creating observables for all Pokémon, forkJoin is used again
+    // to combine all these observables into a single observable. This ensures that the entire process doesn't proceed
+    // until all Pokémon data, including both details and species information, are received for all Pokémon.
     return forkJoin(observables);
     // The result of forkJoin in this context is an array of tuples.
     // Each tuple contains the combined results of the observables provided to forkJoin.
